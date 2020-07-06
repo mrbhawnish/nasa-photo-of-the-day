@@ -1,15 +1,33 @@
 //Starting the project
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import axios from "axios";
+import Planet from "./Planet"
 
-function App() {
+const App = () => {
+const [mydata, setmyData] = useState([]);
+
+  useEffect( () => {
+    axios.get("https://api.nasa.gov/planetary/apod?api_key=7Bgq9GgjWnA7zTMNKBKRsbaI3YkovjAaYGlaEE5X")
+    .then(res => { console.log(res) 
+      setmyData(res.data);
+    })
+    .catch(err => { console.log(err,"error!");
+    });
+
+  }, []);
+
   return (
     <div className="App">
-      <p>
-        Read through the instructions in the README.md file to build your NASA
-        app! Have fun <span role="img" aria-label='go!'>🚀</span>!
-      </p>
-    </div>
+     {<Planet
+            hdurl={mydata.hdurl}
+            name={mydata.copyright}
+            title={mydata.title}
+            explanation={mydata.explanation}
+
+   />}
+
+  </div>
   );
 }
 
